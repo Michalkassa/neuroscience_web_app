@@ -1,11 +1,11 @@
 import React from "react"
-
+import LoginForm from "@/components/LoginForm";
 
 const Login: React.FC = () => {
    
     return (
         <div>
-            This is where the Admins/Admin Log in
+            <LoginForm />
         </div>
     );
 }

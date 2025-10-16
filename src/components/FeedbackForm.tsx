@@ -1,4 +1,4 @@
-import { SubmitFeedbackForm } from "@/app/actions";
+import { SubmitFeedbackForm } from "@/app/api/auth/actions";
 import StarRating from "./StarRating"
 
 const FeedbackForm: React.FC = () => {
