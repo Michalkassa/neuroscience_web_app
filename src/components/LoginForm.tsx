@@ -59,7 +59,7 @@ export default function LoginForm() {
                 Sign in
               </button>
 
-              <p className="text-center text-red-500 mt-2">{state?.message || ""}</p>
+              <p className="text-center text-red-500 mt-2">{state?.message || ""}</p> 
             </form>
           </div>
         </div>

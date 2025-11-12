@@ -5,7 +5,7 @@ import prisma from '@/app/api/prisma'
 import { signIn } from '@/app/api/auth/auth'
 import  AuthError  from 'next-auth';
 
-export async function SubmitFeedbackForm(formData: FormData) {
+export async function SubmitFeedbackForm(formData: FormData){
     const lecture = formData.get("lecture") as string;
     const rating = Number(formData.get("star_rating"));
     const feedback = formData.get("feedback_textarea") as string;
@@ -17,7 +17,7 @@ export async function SubmitFeedbackForm(formData: FormData) {
       data: {
           lecture: lecture,
           rating: rating,
-          Feedback:feedback
+          feedback:feedback
       },
     })
     console.log("Feedback received:", { lecture, rating, feedback });
@@ -25,33 +25,16 @@ export async function SubmitFeedbackForm(formData: FormData) {
     
 }
 
-export async function SignIn(state:any, formData: any){
+type SignInState = { message: string };
+
+export async function SignIn(prevState:SignInState, formData: FormData):Promise<SignInState>{
     const email = formData.get("email") as string
     const password = formData.get("password") as string
 
-    if (!email && !password){
-        return { message: "Login data is Missing"}
-    } 
-    if (!email){
-        return { message: "Please Enter an Email"}
-    } 
-    if (!password){
-        return { message: "Please Enter a Password"}
-    } 
-
-    let validEmail = false
-    for(let i = 0; i <= email.length; i++){
-        if(email[i] == '@'){
-            validEmail = true
-            break
-        }
-    }
-
-    if(validEmail == false){
-        return { message: "Not a valid email"}
-    }
-
-
+    if (!email && !password) return { message: "Login data is Missing"};
+    if (!email) return { message: "Please Enter an Email"};
+    if (!password) return { message: "Please Enter a Password"};
+    if (!email.includes('@')) return { message: 'Not a valid email' };
 
     try {
         const user = await prisma.user.findUnique({
@@ -60,16 +43,8 @@ export async function SignIn(state:any, formData: any){
           }
         })
 
-        if (!user) {
-          return { message: "credentials not correct"}
-        }
-
-        const isPasswordValid = (password == (user.password as string)) //TODO change to bcrypt compare
-
-        if (!isPasswordValid) {
-          return { message: "credentials not correct"}
-        }
-
+        if (!user) return { message: "Credentials not correct"}
+        if (password == user.password) return { message: "Credentials not correct"} // TODO use Bcrypt here
     }
     catch(error){
         throw error;
@@ -81,9 +56,9 @@ export async function SignIn(state:any, formData: any){
     if (error instanceof AuthError) {
       switch (error) {
         case 'CredentialsSignin':
-          return 'Invalid credentials.';
+          return {message: 'Invalid credentials.'};
         default:
-          return 'Something went wrong.';
+          return {message: 'Something went wrong.'};
         }
       }
     }
