@@ -7,7 +7,7 @@ const initialState = {
   message: "",
 };
 
-export default function LoginForm() {
+const LoginForm:React.FC = () => {
   const [state, formAction] = useActionState(SignIn, initialState);
 
   return (
@@ -67,3 +67,5 @@ export default function LoginForm() {
     </section>
   );
 }
+
+export default LoginForm;

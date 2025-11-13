@@ -25,6 +25,11 @@ export async function SubmitFeedbackForm(formData: FormData){
     
 }
 
+export async function getFeedbackFormSubmissions(){
+  const FeedbackFormSubmissions = await prisma.feedbackFormSubmissions.findMany()
+  return FeedbackFormSubmissions
+}
+
 type SignInState = { message: string };
 
 export async function SignIn(prevState:SignInState, formData: FormData):Promise<SignInState>{
