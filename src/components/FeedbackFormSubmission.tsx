@@ -1,3 +1,5 @@
+'use client'
+import { DeleteFeedbackFormSubmission } from "@/app/api/auth/actions";
 import { FeedbackFormSubmissions } from "@prisma/client";
 import React from "react";
 
@@ -9,7 +11,11 @@ interface FeedbackFormSubmission{
 }
 
 const FeedbackFormSubmission: React.FC<FeedbackFormSubmissions> = (props) => {
-    const { lecture, rating, feedback } = props;
+    const {id, lecture, rating, feedback } = props;
+
+    async function handleDelete() {
+        await DeleteFeedbackFormSubmission({id,lecture,rating,feedback})
+    }
 
   return (
     <div className="w-full max-w-4xl mx-auto bg-gray-900 border border-gray-800 rounded-lg shadow-md p-6 my-4 hover:shadow-lg transition-shadow duration-300">
@@ -39,6 +45,7 @@ const FeedbackFormSubmission: React.FC<FeedbackFormSubmissions> = (props) => {
           {feedback}
         </p>
       </div>
+          <button onClick={handleDelete}>DELETE</button>
     </div>
   );
 };

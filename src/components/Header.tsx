@@ -16,6 +16,7 @@ const Header: React.FC = () => {
             width={48}
             height={48}
             className="rounded"
+            
           />
           <Link href="/" className="text-lg sm:text-xl font-semibold">
             Neuroscience Helper
