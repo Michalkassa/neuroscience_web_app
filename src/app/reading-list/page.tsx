@@ -24,7 +24,6 @@ function groupByModule(items: ReadingItem[]){
     }else{
       collection[mod].push(item)
     }
-    collection[item.module].push(item);
   }
   return collection;
 }
@@ -33,7 +32,7 @@ export default function ReadingPage() {
 
 const ReadingList: ReadingItem[] = [
   {
-    id: "r1",
+    id: "1",
     title: "Academic Writing Essentials",
     author: "Jane Smith",
     module: "ENG0001",
@@ -41,7 +40,7 @@ const ReadingList: ReadingItem[] = [
     bookIcon: "📘",
   },
   {
-    id: "r2",
+    id: "2",
     title: "Introduction to Literary Theory",
     author: "T. Eagleton",
     module: "ENG0001",
@@ -49,7 +48,7 @@ const ReadingList: ReadingItem[] = [
     bookIcon: "📙",
   },
   {
-    id: "r3",
+    id: "3",
     title: "Research Methods for English Studies",
     author: "G. Griffith",
     module: "ENG0001",
@@ -57,7 +56,7 @@ const ReadingList: ReadingItem[] = [
     bookIcon: "📗",
   },
   {
-    id: "r4",
+    id: "4",
     title: "Shakespeare: The Complete Works",
     author: "William Shakespeare",
     module: "ENG0045",
@@ -65,7 +64,7 @@ const ReadingList: ReadingItem[] = [
     bookIcon: "📕",
   },
   {
-    id: "r5",
+    id: "5",
     title: "The Modernist Reader",
     author: "Various",
     module: "ENG0045",
@@ -73,7 +72,7 @@ const ReadingList: ReadingItem[] = [
     bookIcon: "📘",
   },
   {
-    id: "r6",
+    id: "6",
     title: "Critical Approaches to Literature",
     author: "D. Peck",
     module: "ENG0045",
@@ -92,7 +91,7 @@ const ReadingList: ReadingItem[] = [
         Displaying all modules on one page, sectioned by module name.
       </p>
 
-      {grouped.keys.length == 0 ? (
+      {Object.keys(grouped).length == 0 ? (
         <p className="text-gray-500">No reading items.</p>
       ) : (
         Object.keys(grouped).map((mod:string) => (
