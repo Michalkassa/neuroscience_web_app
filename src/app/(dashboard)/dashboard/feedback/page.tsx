@@ -9,7 +9,7 @@ interface Submission {
     rating: number;
     feedback: string;
 }
-export default async function Feedback() {
+export default async function FeedbackPage() {
   const session = await auth()
 
   if (!session) return redirect("/login")

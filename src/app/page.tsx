@@ -82,7 +82,7 @@ export default function Home() {
             </div>
             <div className="mt-6">
               <Link
-                href="/reading_list"
+                href="/reading-list"
                 className="inline-block px-4 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-500 transition"
               >
                 View Reading List

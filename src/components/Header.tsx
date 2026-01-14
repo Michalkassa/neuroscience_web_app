@@ -43,7 +43,7 @@ const Header: React.FC = () => {
             Assignments
           </Link>
           <Link
-            href="/reading_list"
+            href="/reading-list"
             className="text-white hover:text-blue-400 font-medium transition"
           >
             Reading List
@@ -118,7 +118,7 @@ const Header: React.FC = () => {
             Assignments
           </Link>
           <Link
-            href="/reading_list"
+            href="/reading-list"
             onClick={() => setOpen(false)}
             className="block text-white py-2 px-2 rounded hover:bg-gray-800"
           >
