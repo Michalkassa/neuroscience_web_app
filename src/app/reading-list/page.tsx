@@ -1,22 +1,9 @@
 
 import Link from "next/link";
+import { BookType } from "@/app/api/types";
 
-interface ReadingItem{
-  id: string;
-  title: string;
-  author: string;
-  module: string;
-  bookIcon?: string;
-  url: string; 
-};
-
-// arr = {
-//   "ENG0001" : [item1, item2, item3 ]
-//   "ENG0045" : [item5, item45, item19]
-//}
-
-function groupByModule(items: ReadingItem[]){
-  const collection: { [key: string]: ReadingItem[] } = {};
+function groupByModule(items: BookType[]){
+  const collection: { [key: string]: BookType[] } = {};
   for (const item of items) {
     let mod:string = item.module;
     if (!collection[mod]) {
@@ -30,7 +17,7 @@ function groupByModule(items: ReadingItem[]){
 
 export default function ReadingPage() {
 
-const ReadingList: ReadingItem[] = [
+const ReadingList: BookType[] = [
   {
     id: "1",
     title: "Academic Writing Essentials",
@@ -101,7 +88,7 @@ const ReadingList: ReadingItem[] = [
             </h2>
 
             <ul className="space-y-3">
-              {grouped[mod].map((book:ReadingItem) => (
+              {grouped[mod].map((book:BookType) => (
                 <li
                   key={book.id}
                   className="group flex items-start gap-4 rounded-lg border border-gray-800 bg-gray-900 p-4 hover:shadow-lg transition-shadow"

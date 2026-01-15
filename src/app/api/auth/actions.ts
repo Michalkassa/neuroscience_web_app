@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import prisma from "@/app/api/prisma";
 import { signIn } from "@/app/api/auth/auth";
 import AuthError from "next-auth";
+import { FeedbackFormSubmissionType } from "@/app/api/types";
 
 export async function SubmitFeedbackForm(formData: FormData) {
     const lecture = formData.get("lecture") as string;
@@ -21,15 +22,10 @@ export async function SubmitFeedbackForm(formData: FormData) {
         },
     });
     console.log("Feedback received:", FeedbackFormSubmission);
-    //revalidatePath("/feedback");
+    revalidatePath("/feedback");
 }
-interface FeedbackFormSubmission{
-    id: string;
-    lecture: string;
-    rating: number;
-    feedback: string;
-}
-export async function DeleteFeedbackFormSubmission(formSubmission:FeedbackFormSubmission) {
+
+export async function DeleteFeedbackFormSubmission(formSubmission:FeedbackFormSubmissionType) {
 
     const deleteWorkout = await prisma.feedbackFormSubmissions.delete({
         where: {

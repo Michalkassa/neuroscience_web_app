@@ -1,4 +1,17 @@
+import { AssignmentType, BookType } from "@/app/api/types";
 
+function groupByModule(items: AssignmentType[]){
+  const collection: { [key: string]: BookType[] } = {};
+  for (const item of items) {
+    let mod:string = item.module;
+    if (!collection[mod]) {
+      collection[mod] = [item];
+    }else{
+      collection[mod].push(item)
+    }
+  }
+  return collection;
+}
 
 export default async function AssignmentsPage() {
      const assignments = [

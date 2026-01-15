@@ -2,13 +2,8 @@ import { redirect } from "next/navigation"
 import { auth } from "@/app/api/auth/auth";
 import { getFeedbackFormSubmissions } from "@/app/api/auth/actions";
 import FeedbackFormSubmission from "@/components/FeedbackFormSubmission";
+import {FeedbackFormSubmissionType} from "@/app/api/types"
 
-interface Submission { 
-    id: string;
-    lecture: string;
-    rating: number;
-    feedback: string;
-}
 export default async function FeedbackPage() {
   const session = await auth()
 
@@ -18,7 +13,7 @@ export default async function FeedbackPage() {
 
   return (  
     <div className="flex flex-col h-full w-full">
-        {FeedbackFormSubmissions.map((Submission:Submission) => (
+        {FeedbackFormSubmissions.map((Submission:FeedbackFormSubmissionType) => (
             <FeedbackFormSubmission 
             key={Submission.id} 
             id={Submission.id} 

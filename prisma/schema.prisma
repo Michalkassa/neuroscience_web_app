@@ -42,3 +42,10 @@ model FeedbackFormSubmissions {
   rating   Int
   feedback String @default("")
 }
+
+model Assignments{
+  id      String @id @default(cuid())
+  title   String
+  module  String 
+  createdAt DateTime
+}
