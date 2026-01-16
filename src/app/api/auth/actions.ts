@@ -112,5 +112,5 @@ export async function SignIn(
             }
         }
     }
-    redirect("/dashboard");
+    redirect("/");
 }

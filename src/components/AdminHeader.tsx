@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import Link from "next/link";
+import { signOut } from "next-auth/react";
 
 const AdminHeader: React.FC = () => {
   return (
@@ -27,6 +28,16 @@ const AdminHeader: React.FC = () => {
           >
             Reading List
           </Link>
+
+          <button
+            onClick={() => signOut({ callbackUrl: "/" })}
+            className="px-4 py-2 rounded-lg font-medium text-red-400
+                       hover:text-white hover:bg-red-600/20
+                       border border-red-500/30
+                       transition-all"
+          >
+            Logout
+          </button>
         </nav>
       </div>
     </header>
