@@ -1,7 +1,7 @@
 
 export interface AssignmentType {
   id : string,
-  title: string,  
+  title: string,    
   module: string,
   dueDate: Date
 }

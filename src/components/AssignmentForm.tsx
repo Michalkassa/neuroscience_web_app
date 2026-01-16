@@ -49,7 +49,7 @@ const AssignmentForm: React.FC = () => {
           </label>
           <input
             required
-            type="date"
+            type="datetime-local"
             id="dueDate"
             name="dueDate"
             className="mt-1 block w-full border border-gray-700 bg-gray-900 text-white rounded-md shadow-sm p-2 placeholder-gray-400"

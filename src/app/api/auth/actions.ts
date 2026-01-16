@@ -7,12 +7,11 @@ import AuthError from "next-auth";
 import { FeedbackFormSubmissionType, prevState } from "@/app/api/types";
 
 export async function SubmitAssignmentForm(prevState: prevState, formData: FormData) {
-    const id = formData.get("id") as string;
     const title = formData.get("title") as string;
     const module = formData.get("module") as string;
     const dueDateString = formData.get("dueDate") as string;
     
-    if (!id || !title || !module || !dueDateString) {
+    if (!title || !module || !dueDateString) {
         return {message: "Missing required data", success: false}
     }
     
@@ -20,7 +19,6 @@ export async function SubmitAssignmentForm(prevState: prevState, formData: FormD
     
     const assignmentSubmission = await prisma.assignments.create({
         data: {
-            id: id,
             title: title,
             module: module,
             dueDate: dueDate,
@@ -66,6 +64,13 @@ export async function getFeedbackFormSubmissions() {
         await prisma.feedbackFormSubmissions.findMany();
     return FeedbackFormSubmissions;
 }
+
+export async function getAssignments() {
+    const assingments =
+        await prisma.assignments.findMany();
+    return assingments;
+}
+
 
 type SignInState = { message: string };
 
