@@ -47,5 +47,5 @@ model Assignments{
   id      String @id @default(cuid())
   title   String
   module  String 
-  createdAt DateTime
+  dueDate DateTime
 }

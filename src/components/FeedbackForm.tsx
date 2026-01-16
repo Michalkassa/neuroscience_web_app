@@ -1,11 +1,19 @@
+'use client'
 import { SubmitFeedbackForm } from "@/app/api/auth/actions";
+import { useActionState } from "react";
 import StarRating from "./StarRating"
 
+const initialState = {
+  message: "",
+  success: false,
+}
+
 const FeedbackForm: React.FC = () => {
+ const [state, formAction] = useActionState(SubmitFeedbackForm, initialState) 
   return (
     <div className="max-w-2xl mx-auto p-6 bg-gray-900 border border-gray-800 rounded-lg shadow-md">
       <h2 className="text-2xl font-semibold mb-4 text-white">Anonymous Feedback Form</h2>
-      <form className="space-y-4" action={SubmitFeedbackForm}>
+      <form className="space-y-4" action={formAction}>
         <div>
           <label htmlFor="lecture" className="block text-sm font-medium text-gray-300">
             Lecture
@@ -40,6 +48,7 @@ const FeedbackForm: React.FC = () => {
         >
           Submit
         </button>
+        {state.success ? <p className="text-green-600">{state?.message}</p> : <p className="text-red-600">{state?.message}</p>}
       </form>
     </div>
   );

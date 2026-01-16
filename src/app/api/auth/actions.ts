@@ -4,15 +4,41 @@ import { revalidatePath } from "next/cache";
 import prisma from "@/app/api/prisma";
 import { signIn } from "@/app/api/auth/auth";
 import AuthError from "next-auth";
-import { FeedbackFormSubmissionType } from "@/app/api/types";
+import { FeedbackFormSubmissionType, prevState } from "@/app/api/types";
 
-export async function SubmitFeedbackForm(formData: FormData) {
+export async function SubmitAssignmentForm(prevState: prevState, formData: FormData) {
+    const id = formData.get("id") as string;
+    const title = formData.get("title") as string;
+    const module = formData.get("module") as string;
+    const dueDateString = formData.get("dueDate") as string;
+    
+    if (!id || !title || !module || !dueDateString) {
+        return {message: "Missing required data", success: false}
+    }
+    
+    const dueDate = new Date(dueDateString);
+    
+    const assignmentSubmission = await prisma.assignments.create({
+        data: {
+            id: id,
+            title: title,
+            module: module,
+            dueDate: dueDate,
+        },
+    });
+    
+    revalidatePath("/assignments");
+    return {message: "Assignment Submitted Successfully", success: true}
+}
+
+
+export async function SubmitFeedbackForm(prevState: prevState, formData: FormData) {
     const lecture = formData.get("lecture") as string;
     const rating = Number(formData.get("star_rating"));
     const feedback = formData.get("feedback_textarea") as string;
 
     if (!lecture || !feedback) {
-        throw new Error("Missing required Data");
+        return {message:"Missing required data", success: false}
     }
     const FeedbackFormSubmission = await prisma.feedbackFormSubmissions.create({
         data: {
@@ -21,7 +47,7 @@ export async function SubmitFeedbackForm(formData: FormData) {
             feedback: feedback,
         },
     });
-    console.log("Feedback received:", FeedbackFormSubmission);
+    return {message: "Feedback Submitted Successfully", success : true}
     revalidatePath("/feedback");
 }
 
