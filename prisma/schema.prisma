@@ -41,3 +41,12 @@ model Assignments {
   module  String
   dueDate DateTime
 }
+
+model Books {
+  id String @id @default(cuid())
+  title String
+  author String
+  module String
+  url String
+  Icon String
+}

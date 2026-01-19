@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BookType } from "@/app/api/types";
+import { getBooks } from "../api/auth/actions";
 
 function groupByModule(items: BookType[]){
   const collection: { [key: string]: BookType[] } = {};
@@ -14,65 +15,16 @@ function groupByModule(items: BookType[]){
   return collection;
 }
 
-export default function ReadingPage() {
+export default async function ReadingPage() {
 
-const ReadingList: BookType[] = [
-  {
-    id: "1",
-    title: "Academic Writing Essentials",
-    author: "Jane Smith",
-    module: "ENG0001",
-    url: "https://example.com/academic-writing-essentials",
-    bookIcon: "📘",
-  },
-  {
-    id: "2",
-    title: "Introduction to Literary Theory",
-    author: "T. Eagleton",
-    module: "ENG0001",
-    url: "https://example.com/literary-theory",
-    bookIcon: "📙",
-  },
-  {
-    id: "3",
-    title: "Research Methods for English Studies",
-    author: "G. Griffith",
-    module: "ENG0001",
-    url: "https://example.com/research-methods-english",
-    bookIcon: "📗",
-  },
-  {
-    id: "4",
-    title: "Shakespeare: The Complete Works",
-    author: "William Shakespeare",
-    module: "ENG0045",
-    url: "https://example.com/shakespeare-complete",
-    bookIcon: "📕",
-  },
-  {
-    id: "5",
-    title: "The Modernist Reader",
-    author: "Various",
-    module: "ENG0045",
-    url: "https://example.com/modernist-reader",
-    bookIcon: "📘",
-  },
-  {
-    id: "6",
-    title: "Critical Approaches to Literature",
-    author: "D. Peck",
-    module: "ENG0045",
-    url: "https://example.com/critical-approaches",
-    bookIcon: "📚",
-  },
-];
-  
-  const grouped = groupByModule(ReadingList);
+  const ReadingList: BookType[] = await getBooks();
+
+  const grouped: { [key: string]: BookType[] } = groupByModule(ReadingList);
   
   return (
     <div className="w-full max-w-5xl mx-auto p-6">
       <div className="mb-8">
-        <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+        <h1 className="text-3xl sm:text-4xl font-bold mb-2 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
           Reading List
         </h1>
         <p className="text-gray-400">

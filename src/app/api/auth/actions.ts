@@ -71,6 +71,10 @@ export async function getAssignments() {
     return assingments;
 }
 
+export async function getBooks(){
+    const books = await prisma.books.findMany();
+    return books
+}
 
 type SignInState = { message: string };
 
