@@ -4,7 +4,7 @@ import { getFeedbackFormSubmissions } from "@/app/api/auth/actions";
 import FeedbackFormSubmission from "@/components/FeedbackFormSubmission";
 import {FeedbackFormSubmissionType} from "@/app/api/types"
 
-export default async function FeedbackPage() {
+export default async function ReadingListPage() {
   const session = await auth()
 
   if (!session) return redirect("/login")
@@ -13,16 +13,7 @@ export default async function FeedbackPage() {
 
   return (  
     <div className="flex flex-col h-full w-full">
-        {FeedbackFormSubmissions && <p>There is no feedback yet</p>}
-        {FeedbackFormSubmissions.map((Submission:FeedbackFormSubmissionType) => (
-            <FeedbackFormSubmission 
-            key={Submission.id} 
-            id={Submission.id} 
-            lecture={Submission.lecture} 
-            rating={Submission.rating} 
-            feedback={Submission.feedback ? Submission.feedback : "No Feedback Submitted"}
-            />
-        ))}
+        WORK IN PROGRESS
     </div>
   )
 }

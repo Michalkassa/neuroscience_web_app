@@ -18,12 +18,7 @@ import AssignmentCard from "@/components/AssignmentCard";
 
 export default async function AssignmentsPage() {
 
-  const session = await auth()
-
-  if (!session) return redirect("/login")
-
   const assignments = await getAssignments()
-
 
   return (
     <div className="w-full max-w-4xl mx-auto p-6">
