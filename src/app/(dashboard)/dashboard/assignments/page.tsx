@@ -2,7 +2,7 @@ import React from "react";
 import AssignmentForm from "@/components/AssignmentForm";
 import { getAssignments } from "@/app/api/auth/actions";
 import { AssignmentType } from "@/app/api/types";
-import AssignmentCard from "@/components/AssignmentCard";
+import AdminAssignmentCard from "@/components/AdminAssignmentCard";
 
 const AssignmentsPage: React.FC = async () => {
   const assignments = await getAssignments();
@@ -20,7 +20,7 @@ const AssignmentsPage: React.FC = async () => {
           ) : (
             <ul className="space-y-4">
               {assignments.map((assignment: AssignmentType) => (
-                <AssignmentCard
+                <AdminAssignmentCard
                   key={assignment.id}
                   assignment={assignment}
                 />

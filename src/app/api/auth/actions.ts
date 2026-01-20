@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import prisma from "@/app/api/prisma";
 import { signIn } from "@/app/api/auth/auth";
 import AuthError from "next-auth";
-import { FeedbackFormSubmissionType, prevState } from "@/app/api/types";
+import { AssignmentType, FeedbackFormSubmissionType, prevState } from "@/app/api/types";
 
 export async function SubmitAssignmentForm(prevState: prevState, formData: FormData) {
     const title = formData.get("title") as string;
@@ -49,9 +49,20 @@ export async function SubmitFeedbackForm(prevState: prevState, formData: FormDat
     revalidatePath("/feedback");
 }
 
+export async function DeleteAssignment(assignment:AssignmentType) {
+
+    const deletedAssignment = await prisma.assignments.delete({
+        where: {
+        id: assignment.id,
+        },
+    })
+    revalidatePath("/dashboard/assignments")
+};
+
+
 export async function DeleteFeedbackFormSubmission(formSubmission:FeedbackFormSubmissionType) {
 
-    const deleteWorkout = await prisma.feedbackFormSubmissions.delete({
+    const deletedForm= await prisma.feedbackFormSubmissions.delete({
         where: {
         id: formSubmission.id,
         },
