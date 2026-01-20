@@ -40,7 +40,6 @@ export default async function ReadingPage() {
         <div className="space-y-8">
           {Object.keys(grouped).map((mod: string) => (
             <section key={mod}>
-              {/* Module Header */}
               <div className="flex items-center gap-3 mb-4">
                 <div className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600/20 to-purple-600/20 border border-blue-500/30 rounded-lg">
                   <svg className="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -53,25 +52,21 @@ export default async function ReadingPage() {
                 <div className="flex-1 h-px bg-gradient-to-r from-gray-700 to-transparent"></div>
               </div>
 
-              {/* Books Grid */}
               <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2">
                 {grouped[mod].map((book: BookType) => (
                   <div
                     key={book.id}
                     className="group relative p-6 bg-gradient-to-br from-gray-900 to-gray-800 border border-gray-700 rounded-xl shadow-lg hover:shadow-2xl hover:border-blue-500 transition-all duration-300"
                   >
-                    {/* Gradient overlay on hover */}
                     <div className="absolute inset-0 bg-gradient-to-br from-blue-500/0 to-purple-500/0 group-hover:from-blue-500/5 group-hover:to-purple-500/5 rounded-xl transition-all duration-300" />
                     
                     <div className="relative flex items-start gap-4">
-                      {/* Book Icon */}
                       <div className="flex-shrink-0">
                         <span className="text-5xl leading-none select-none group-hover:scale-110 transition-transform duration-300" aria-hidden="true">
                           {book.bookIcon ?? "📚"}
                         </span>
                       </div>
 
-                      {/* Book Details */}
                       <div className="flex-1 min-w-0">
                         <h3 className="text-lg font-bold text-white group-hover:text-blue-400 transition-colors mb-1">
                           {book.title}
@@ -92,7 +87,6 @@ export default async function ReadingPage() {
                           </div>
                         </div>
 
-                        {/* Open Resource Button */}
                         <Link
                           href={book.url}
                           target="_blank"
