@@ -2,7 +2,7 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import prisma from "@/app/api/prisma";
-import { signIn } from "@/app/api/auth/auth";
+import { auth, signIn } from "@/app/api/auth/auth";
 import AuthError from "next-auth";
 import { AssignmentType, FeedbackFormSubmissionType, prevState } from "@/app/api/types";
 
@@ -28,6 +28,27 @@ export async function SubmitAssignmentForm(prevState: prevState, formData: FormD
     revalidatePath("/assignments");
     return {message: "Assignment Submitted Successfully", success: true}
 }
+export async function SubmitReadingListForm(prevState:prevState, formData: FormData){
+    const title = formData.get("title") as string;
+    const author = formData.get("author") as string;
+    const module = formData.get("module") as string;
+    const url = formData.get('url') as string;
+
+    if (!title || !author || !module || !url) {
+        return {message:"Missing required data", success: false}
+    }
+    const ReadinglistBooks = await prisma.books.create({
+        data: {
+            title: title,
+            author: author,
+            module: module,
+            url:url
+        },
+
+    });
+    return {message: "Feedback Submitted Successfully", success : true}
+}
+
 
 
 export async function SubmitFeedbackForm(prevState: prevState, formData: FormData) {
@@ -46,7 +67,6 @@ export async function SubmitFeedbackForm(prevState: prevState, formData: FormDat
         },
     });
     return {message: "Feedback Submitted Successfully", success : true}
-    revalidatePath("/feedback");
 }
 
 export async function DeleteAssignment(assignment:AssignmentType) {

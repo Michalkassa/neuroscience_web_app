@@ -13,7 +13,12 @@ export default async function FeedbackPage() {
 
   return (  
     <div className="flex flex-col h-full w-full">
-        {FeedbackFormSubmissions && <p>There is no feedback yet</p>}
+        <div className="mt-8">
+          {FeedbackFormSubmissions &&
+            <div className="text-gray-400 text-center">
+              No feedback found.
+            </div>}
+        </div>
         {FeedbackFormSubmissions.map((Submission:FeedbackFormSubmissionType) => (
             <FeedbackFormSubmission 
             key={Submission.id} 
