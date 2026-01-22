@@ -14,10 +14,10 @@ export default async function FeedbackPage() {
   return (  
     <div className="flex flex-col h-full w-full">
         <div className="mt-8">
-          {FeedbackFormSubmissions &&
+          {FeedbackFormSubmissions.length == 0 ? (
             <div className="text-gray-400 text-center">
               No feedback found.
-            </div>}
+            </div>) : <div></div>}
         </div>
         {FeedbackFormSubmissions.map((Submission:FeedbackFormSubmissionType) => (
             <FeedbackFormSubmission 

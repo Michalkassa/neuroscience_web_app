@@ -34,7 +34,7 @@ export async function SubmitReadingListForm(prevState:prevState, formData: FormD
     const module = formData.get("module") as string;
     const url = formData.get('url') as string;
 
-    if (!title || !author || !module || !url) {
+    if (!title || !author || !module ) {
         return {message:"Missing required data", success: false}
     }
     const ReadinglistBooks = await prisma.books.create({
@@ -46,7 +46,7 @@ export async function SubmitReadingListForm(prevState:prevState, formData: FormD
         },
 
     });
-    return {message: "Feedback Submitted Successfully", success : true}
+    return {message: "Book Submitted Successfully", success : true}
 }
 
 

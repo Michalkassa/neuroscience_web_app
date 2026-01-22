@@ -47,7 +47,7 @@ model Books {
   title String
   author String
   module String
-  url String
+  url String?
   Icon String?
 }
     

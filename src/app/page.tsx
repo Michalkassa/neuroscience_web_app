@@ -10,11 +10,6 @@ export default function Home() {
           <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight">
             Neuroscience Helper
           </h1>
-          <p className="mt-4 text-gray-300 max-w-2xl mx-auto">
-            Concise resources, honest feedback and helpful assignments to
-            support your study of neuroscience. Explore the quick links below to
-            get started.
-          </p>
         </div>
 
         <div className="grid gap-8 md:grid-cols-3">
@@ -23,8 +18,7 @@ export default function Home() {
               <div>
                 <h2 className="text-xl font-semibold">Feedback Form</h2>
                 <p className="mt-2 text-gray-400 text-sm">
-                  Submit anonymous feedback about lectures and resources. Quick
-                  ratings and comments help us improve the materials.
+                  text text text
                 </p>
               </div>
               <svg
@@ -56,8 +50,9 @@ export default function Home() {
               <div>
                 <h2 className="text-xl font-semibold">Reading List</h2>
                 <p className="mt-2 text-gray-400 text-sm">
-                  Curated papers, book chapters and summaries to guide your
-                  reading — sorted by topic and difficulty.
+                  text text text text
+                  text text text text text 
+
                 </p>
               </div>
               <svg
@@ -95,8 +90,7 @@ export default function Home() {
               <div>
                 <h2 className="text-xl font-semibold">Assignments</h2>
                 <p className="mt-2 text-gray-400 text-sm">
-                  Hands-on problems and projects to test concepts and build
-                  practical understanding.
+                  text text text text text 
                 </p>
               </div>
               <svg
@@ -130,12 +124,6 @@ export default function Home() {
           </article>
         </div>
 
-        <div className="mt-12 text-center text-gray-400">
-          <p>
-            Prefer a quick tour? Use the links above to jump straight to the
-            section you're interested in.
-          </p>
-        </div>
       </section>
     </main>
   );
