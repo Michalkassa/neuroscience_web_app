@@ -4,7 +4,22 @@ import { revalidatePath } from "next/cache";
 import prisma from "@/app/api/prisma";
 import { auth, signIn } from "@/app/api/auth/auth";
 import AuthError from "next-auth";
+import {Filter } from 'bad-words'
+
 import { AssignmentType, FeedbackFormSubmissionType, prevState } from "@/app/api/types";
+
+
+function filterInputText(inputText : string): string {
+    const badWordsFilter = new Filter({ replaceRegex: /[A-Za-z0-9가-힣_]/g });
+    //const words = require("./filtered-bad-words.json");
+    //badWordsFilter.addWords(...words);
+
+    if (inputText.length == 0){
+        return ""
+    }
+    
+    return badWordsFilter.clean(inputText);
+} 
 
 export async function SubmitAssignmentForm(prevState: prevState, formData: FormData) {
     const title = formData.get("title") as string;
@@ -52,9 +67,9 @@ export async function SubmitReadingListForm(prevState:prevState, formData: FormD
 
 
 export async function SubmitFeedbackForm(prevState: prevState, formData: FormData) {
-    const lecture = formData.get("lecture") as string;
+    const lecture = filterInputText(formData.get("lecture") as string);
     const rating = Number(formData.get("star_rating"));
-    const feedback = formData.get("feedback_textarea") as string;
+    const feedback = filterInputText(formData.get("feedback_textarea") as string);
 
     if (!lecture || !feedback) {
         return {message:"Missing required data", success: false}
