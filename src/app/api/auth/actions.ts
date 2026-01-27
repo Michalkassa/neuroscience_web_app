@@ -65,11 +65,31 @@ export async function SubmitReadingListForm(prevState:prevState, formData: FormD
 }
 
 
+async function validateCaptcha(captchaToken: string): Promise<boolean> {
+    const minimumCaptchaScore = 0.0;
+    const secretKey = process.env.RECAPTCHA_SECRET_KEY || '';
+    const data = new FormData();
+    data.append('secret', secretKey);
+    data.append('response', captchaToken);
+    const captchaResponse = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+        method: "POST",
+        body: data,
+    });
+    const res = await captchaResponse.json();
+    console.log(`captcha score: ${res.score}`);
+    return res.score && res.score >= minimumCaptchaScore;
+}
 
 export async function SubmitFeedbackForm(prevState: prevState, formData: FormData) {
     const lecture = filterInputText(formData.get("lecture") as string);
     const rating = Number(formData.get("star_rating"));
     const feedback = filterInputText(formData.get("feedback_textarea") as string);
+
+    const valid = await validateCaptcha(formData.get('captcha') as string)
+
+    if (!valid) {
+        return {message:"Capctcha not valid", success: false}
+    }
 
     if (!lecture || !feedback) {
         return {message:"Missing required data", success: false}
