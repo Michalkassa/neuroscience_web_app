@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import AdminHeader from "@/components/AdminHeader";
+import ReCaptchaProvider from "@/components/ReCaptchaProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,11 +30,13 @@ export default async function RootLayout({
   const session = await auth();
   return (
     <html lang="en">
+      <ReCaptchaProvider>
       <body className="bg-gray-950">
         <Header />
         {session && <AdminHeader />}
         {children}
       </body>
+      </ReCaptchaProvider>
     </html>
   );
 }

@@ -1,15 +1,32 @@
 'use client'
 import { SubmitFeedbackForm } from "@/app/api/auth/actions";
-import { useActionState } from "react";
+import { useActionState, useCallback, useEffect } from "react";
 import StarRating from "./StarRating"
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import { prevState } from "@/app/api/types";
+
 
 const initialState = {
   message: "",
   success: false,
 }
 
+
 const FeedbackForm: React.FC = () => {
- const [state, formAction] = useActionState(SubmitFeedbackForm, initialState) 
+ const [state, formAction] = useActionState(handleSubmit, initialState) 
+ const { executeRecaptcha } = useGoogleReCaptcha();
+
+  async function handleSubmit(prevState: prevState, formData: FormData) {
+    let gRecaptchaToken = ''
+    if (executeRecaptcha) {
+        gRecaptchaToken = await executeRecaptcha('FeedbackForm');
+    }
+    formData.set('captcha', gRecaptchaToken);
+
+    return SubmitFeedbackForm(prevState, formData)
+  }
+
+
   return (
     <div className="max-w-2xl mx-auto p-6 bg-gray-900 border border-gray-800 rounded-lg shadow-md">
       <h2 className="text-2xl font-semibold mb-4 text-white">Anonymous Feedback Form</h2>
