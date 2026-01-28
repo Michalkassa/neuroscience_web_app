@@ -6,7 +6,7 @@ import { auth, signIn } from "@/app/api/auth/auth";
 import AuthError from "next-auth";
 import {Filter } from 'bad-words'
 
-import { AssignmentType, FeedbackFormSubmissionType, prevState } from "@/app/api/types";
+import { AssignmentType, BookType, FeedbackFormSubmissionType, prevState } from "@/app/api/types";
 
 
 function filterInputText(inputText : string): string {
@@ -113,6 +113,17 @@ export async function DeleteAssignment(assignment:AssignmentType) {
     })
     revalidatePath("/dashboard/assignments")
 };
+
+export async function DeleteBook(bookId:string) {
+
+    const deletedBook = await prisma.books.delete({
+        where: {
+        id: bookId
+        },
+    })
+    revalidatePath("/dashboard/readinglist")
+};
+
 
 
 export async function DeleteFeedbackFormSubmission(formSubmission:FeedbackFormSubmissionType) {
