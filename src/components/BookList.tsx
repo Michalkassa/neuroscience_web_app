@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { BookType } from "@/app/api/types";
+import { auth } from "@/app/api/auth/auth";
+import DeleteBookButton from "@/components/DeleteBookButton"
 
 function groupByModule(items: BookType[]) {
   const collection: { [key: string]: BookType[] } = {};
@@ -18,8 +20,11 @@ interface BookListProps {
   books: BookType[];
 }
 
-export default function BookList({ books }: BookListProps) {
+export default async function BookList({ books }: BookListProps) {
   const grouped: { [key: string]: BookType[] } = groupByModule(books);
+  
+  const session = await auth()
+
 
   if (Object.keys(grouped).length === 0) {
     return (
@@ -98,6 +103,11 @@ export default function BookList({ books }: BookListProps) {
                         <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
                       </svg>
                     </Link>}
+                    {session && (
+                        <DeleteBookButton 
+                          bookId={book.id}
+                        />
+                      )}
                   </div>
                 </div>
               </div>

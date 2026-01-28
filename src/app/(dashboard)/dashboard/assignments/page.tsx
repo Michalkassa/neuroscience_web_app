@@ -1,11 +1,17 @@
 import React from "react";
+import { redirect } from "next/navigation"
 import AssignmentForm from "@/components/AssignmentForm";
 import { getAssignments } from "@/app/api/auth/actions";
 import { AssignmentType } from "@/app/api/types";
 import AdminAssignmentCard from "@/components/AdminAssignmentCard";
+import { auth } from "@/app/api/auth/auth";
 
 const AssignmentsPage: React.FC = async () => {
   const assignments = await getAssignments();
+
+  const session = await auth()
+
+  if (!session) return redirect("/login")
 
   return (
     <div className="bg-gray-950 min-h-screen pt-10">
