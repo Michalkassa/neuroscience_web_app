@@ -65,7 +65,7 @@ export default async function BookList({ books }: BookListProps) {
                         className="text-3xl leading-none select-none group-hover:scale-110 transition-transform duration-300"
                         aria-hidden="true"
                       >
-                        {book.bookIcon ?? "📚"}
+                        {book.icon ?? "📚"}
                       </span>
                       <h3 className="text-2xl font-bold text-white group-hover:text-blue-400 transition-colors leading-tight">
                         {book.title}

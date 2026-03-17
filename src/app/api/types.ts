@@ -21,6 +21,7 @@ export interface BookType{
   title: string;
   author: string;
   moduleName: string;
-  bookIcon?: string;
-  url: string; 
+  url: string | null;
+  icon: string | null;
+
 };
