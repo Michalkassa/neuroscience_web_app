@@ -1,10 +1,10 @@
-import NextAuth from "next-auth";
+import NextAuth, { User } from "next-auth";
 import Credentials from "next-auth/providers/credentials"
 import prisma from "@/app/api/prisma"
 import bcrypt from 'bcrypt'
 import { PrismaAdapter } from "@auth/prisma-adapter"
 
-export const {handlers,auth, signIn, signOut } = NextAuth({
+export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [
     Credentials({
@@ -12,27 +12,26 @@ export const {handlers,auth, signIn, signOut } = NextAuth({
         email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" }
       },
-      authorize: async (credentials): Promise<any> => {
+      authorize: async (credentials): Promise<User | null> => {
         if (!credentials?.email || !credentials?.password) {
           return null;
         }
-
         try {
           const user = await prisma.user.findUnique({
             where: {
               email: credentials.email as string
             }
           })
-
           if (!user || !user.password) {
             return null
           }
-          const isPasswordValid =  bcrypt.compare(credentials.password as string, user.password as string)
-
+          const isPasswordValid = await bcrypt.compare(
+            credentials.password as string,
+            user.password as string
+          )
           if (!isPasswordValid) {
             return null
           }
-
           return {
             id: user.id as string,
             email: user.email as string,
@@ -40,7 +39,7 @@ export const {handlers,auth, signIn, signOut } = NextAuth({
           }
         } catch (error) {
           console.error('Error during authentication:', error)
-          return null 
+          return null
         }
       }
     })
