@@ -21,7 +21,7 @@ const AdminAssignmentCard = ({ assignment }: { assignment: AssignmentType }) => 
           </h3>
           <div className="flex items-center gap-2">
             <span className="px-3 py-1 bg-blue-600/20 text-blue-400 text-md font-semibold rounded-full border border-blue-500/30">
-              {assignment.module}
+              {assignment.moduleName}
             </span>
             
             <button

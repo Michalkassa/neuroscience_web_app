@@ -11,7 +11,7 @@ const AssignmentCard = ({ assignment }: { assignment: AssignmentType }) => {
             {assignment.title}
           </h3>
           <span className="px-3 py-1 bg-blue-600/20 text-blue-400 text-md font-semibold rounded-full border border-blue-500/30">
-            {assignment.module}
+            {assignment.moduleName}
           </span>
         </div>
         <div className="mb-4 p-3 bg-gray-800/50 rounded-lg border border-gray-700">
