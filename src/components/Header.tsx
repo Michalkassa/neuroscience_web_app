@@ -10,24 +10,20 @@ const Header: React.FC = () => {
     <header className="bg-gradient-to-r from-gray-950 via-gray-900 to-gray-950 text-white shadow-lg">
       {/* Main Header */}
       <div className="border-b border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-8 py-4 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 py-6 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="relative">
               <Image
                 src="/logo.png"
                 alt="Logo"
-                width={48}
-                height={48}
+                width={70}
+                height={70}
                 className="rounded-lg"
               />
               <div className="absolute inset-0 rounded-lg bg-blue-500/20 blur-sm"></div>
             </div>
-            <Link href="/" className="text-lg sm:text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent hover:from-blue-300 hover:to-purple-300 transition-all">
-              Neuroscience Helper
-            </Link>
           </div>
 
-          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-2">
             <Link
               href="/"

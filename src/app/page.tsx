@@ -6,10 +6,8 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-gray-950 text-white">
       <section className="max-w-6xl mx-auto px-6 py-16">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight">
+        <div className="text-center mb-12 text-3xl">
             Neuroscience Helper
-          </h1>
         </div>
 
         <div className="grid gap-8 md:grid-cols-3">
