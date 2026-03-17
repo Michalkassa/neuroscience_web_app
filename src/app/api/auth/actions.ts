@@ -23,10 +23,10 @@ function filterInputText(inputText : string): string {
 
 export async function SubmitAssignmentForm(prevState: prevState, formData: FormData) {
     const title = formData.get("title") as string;
-    const module = formData.get("module") as string;
+    const moduleName = formData.get("module") as string;
     const dueDateString = formData.get("dueDate") as string;
     
-    if (!title || !module || !dueDateString) {
+    if (!title || !moduleName || !dueDateString) {
         return {message: "Missing required data", success: false}
     }
     
@@ -35,7 +35,7 @@ export async function SubmitAssignmentForm(prevState: prevState, formData: FormD
     
         data: {
             title: title,
-            module: module,
+            moduleName: moduleName,
             dueDate: dueDate,
         },
     });
@@ -46,17 +46,17 @@ export async function SubmitAssignmentForm(prevState: prevState, formData: FormD
 export async function SubmitReadingListForm(prevState:prevState, formData: FormData){
     const title = formData.get("title") as string;
     const author = formData.get("author") as string;
-    const module = formData.get("module") as string;
+    const moduleName = formData.get("module") as string;
     const url = formData.get('url') as string;
 
-    if (!title || !author || !module ) {
+    if (!title || !author || !moduleName ) {
         return {message:"Missing required data", success: false}
     }
     const ReadinglistBooks = await prisma.books.create({
         data: {
             title: title,
             author: author,
-            module: module,
+            moduleName: moduleName,
             url:url
         },
 

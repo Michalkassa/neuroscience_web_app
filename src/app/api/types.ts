@@ -2,7 +2,7 @@
 export interface AssignmentType {
   id : string,
   title: string,    
-  module: string,
+  moduleName: string,
   dueDate: Date
 }
 export interface prevState{
@@ -20,7 +20,7 @@ export interface BookType{
   id: string;
   title: string;
   author: string;
-  module: string;
+  moduleName: string;
   bookIcon?: string;
   url: string; 
 };

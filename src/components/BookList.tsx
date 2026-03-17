@@ -6,7 +6,7 @@ import DeleteBookButton from "@/components/DeleteBookButton";
 function groupByModule(items: BookType[]) {
   const collection: { [key: string]: BookType[] } = {};
   for (const item of items) {
-    const mod: string = item.module;
+    const mod: string = item.moduleName;
     if (!collection[mod]) {
       collection[mod] = [item];
     } else {
@@ -73,7 +73,7 @@ export default async function BookList({ books }: BookListProps) {
                     </div>
                     <div className="flex items-center gap-2 ml-3 shrink-0">
                       <span className="px-3 py-1 bg-blue-600/20 text-blue-400 text-sm font-semibold rounded-full border border-blue-500/30">
-                        {book.module}
+                        {book.moduleName}
                       </span>
                       {session && <DeleteBookButton bookId={book.id} />}
                     </div>
