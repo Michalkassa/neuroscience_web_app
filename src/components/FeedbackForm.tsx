@@ -13,24 +13,24 @@ const initialState = {
 
 
 const FeedbackForm: React.FC = () => {
- const [state, formAction] = useActionState(handleSubmit, initialState) 
+ const [state, formAction] = useActionState(SubmitFeedbackForm, initialState) 
  const { executeRecaptcha } = useGoogleReCaptcha();
 
-  async function handleSubmit(prevState: prevState, formData: FormData) {
-    let gRecaptchaToken = ''
-    if (executeRecaptcha) {
-        gRecaptchaToken = await executeRecaptcha('FeedbackForm');
-    }
-    formData.set('captcha', gRecaptchaToken);
+  // async function handleSubmit(prevState: prevState, formData: FormData) {
+  //   let gRecaptchaToken = ''
+  //   if (executeRecaptcha) {
+  //       gRecaptchaToken = await executeRecaptcha('FeedbackForm');
+  //   }
+  //   formData.set('captcha', gRecaptchaToken);
 
-    return SubmitFeedbackForm(prevState, formData)
-  }
+  //   return SubmitFeedbackForm(prevState, formData)
+  // }
 
 
   return (
     <div className="max-w-2xl mx-auto p-6 bg-gray-900 border border-gray-800 rounded-lg shadow-md">
       <h2 className="text-2xl font-semibold mb-4 text-white">Anonymous Feedback Form</h2>
-      <form className="space-y-4" action={handleSubmit}>
+      <form className="space-y-4" action={formAction}>
         <div>
           <label htmlFor="lecture" className="block text-sm font-medium text-gray-300">
             Lecture

@@ -31,8 +31,8 @@ export async function SubmitAssignmentForm(prevState: prevState, formData: FormD
     }
     
     const dueDate = new Date(dueDateString);
-    
     const assignmentSubmission = await prisma.assignments.create({
+    
         data: {
             title: title,
             module: module,
@@ -61,6 +61,7 @@ export async function SubmitReadingListForm(prevState:prevState, formData: FormD
         },
 
     });
+    revalidatePath("/dashboard/readinglist");
     return {message: "Book Submitted Successfully", success : true}
 }
 
@@ -85,11 +86,11 @@ export async function SubmitFeedbackForm(prevState: prevState, formData: FormDat
     const rating = Number(formData.get("star_rating"));
     const feedback = filterInputText(formData.get("feedback_textarea") as string);
 
-    const valid = await validateCaptcha(formData.get('captcha') as string)
+    //const valid = await validateCaptcha(formData.get('captcha') as string)
 
-    if (!valid) {
-        return {message:"Capctcha not valid", success: false}
-    }
+    // if (!valid) {
+    //     return {message:"Capctcha not valid", success: false}
+    // }
 
     if (!lecture || !feedback) {
         return {message:"Missing required data", success: false}

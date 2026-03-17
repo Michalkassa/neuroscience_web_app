@@ -4,7 +4,7 @@ import LoginForm from "@/components/LoginForm";
 const Login: React.FC = () => {
    
     return (
-        <div>
+        <div className="flex min-h-screen justify-center items-center">
             <LoginForm />
         </div>
     );
