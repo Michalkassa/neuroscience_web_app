@@ -6,7 +6,7 @@ import DeleteBookButton from "@/components/DeleteBookButton";
 function groupByModule(items: BookType[]) {
   const collection: { [key: string]: BookType[] } = {};
   for (const item of items) {
-    let mod: string = item.module;
+    const mod: string = item.module;
     if (!collection[mod]) {
       collection[mod] = [item];
     } else {
