@@ -174,15 +174,11 @@ export async function SignIn(
                 email: email as string,
             },
         });
-
+        
         if (!user) return { message: "Credentials not correct" };
-        if (password == user.password)
+        if (password != user.password)
             return { message: "Credentials not correct" }; // TODO use Bcrypt here
-    } catch (error) {
-        throw error;
-    }
-
-    try {
+        
         await signIn("credentials", formData);
     } catch (error) {
         if (error instanceof AuthError) {
@@ -194,5 +190,6 @@ export async function SignIn(
             }
         }
     }
+
     redirect("/");
 }

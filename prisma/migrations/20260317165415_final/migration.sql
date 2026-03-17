@@ -6,8 +6,8 @@
 
 */
 -- AlterTable
-ALTER TABLE "Assignments" DROP COLUMN "module",
-ADD COLUMN     "moduleName" TEXT NOT NULL;
+UPDATE "Assignments" SET "module" = '' WHERE "module" IS NULL;
+ALTER TABLE "Assignments" RENAME COLUMN "module" TO "moduleName";
 
 -- CreateTable
 CREATE TABLE "Books" (
@@ -17,6 +17,5 @@ CREATE TABLE "Books" (
     "moduleName" TEXT NOT NULL,
     "url" TEXT,
     "icon" TEXT,
-
     CONSTRAINT "Books_pkey" PRIMARY KEY ("id")
 );
