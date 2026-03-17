@@ -5,7 +5,7 @@ import AssignmentCard from "@/components/AssignmentCard";
 function groupByModule(items: AssignmentType[]) {
   const collection: { [key: string]: AssignmentType[] } = {};
   for (const item of items) {
-    let mod: string = item.module;
+    const mod: string = item.module;
     if (!collection[mod]) {
       collection[mod] = [item];
     } else {
