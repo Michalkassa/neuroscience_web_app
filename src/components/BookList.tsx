@@ -2,6 +2,7 @@ import Link from "next/link";
 import { BookType } from "@/app/api/types";
 import { auth } from "@/app/api/auth/auth";
 import DeleteBookButton from "@/components/DeleteBookButton";
+import { ui } from "@/app/theme";
 
 function groupByModule(items: BookType[]) {
   const collection: { [key: string]: BookType[] } = {};
@@ -26,101 +27,57 @@ export default async function BookList({ books }: BookListProps) {
 
   if (Object.keys(grouped).length === 0) {
     return (
-      <div className="text-center py-12">
-        <p className="text-gray-500 text-lg">No reading items available.</p>
-      </div>
+      <p className="py-12 text-center text-lg italic text-[#67747a]">
+        No reading items recorded yet.
+      </p>
     );
   }
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-12">
       {Object.keys(grouped).map((mod: string) => (
         <section key={mod}>
           {/* Module Header */}
-          <div className="flex items-center gap-3 mb-5">
-            <div className="flex items-center gap-2 px-4 py-2 bg-blue-600/20 border border-blue-500/30 rounded-full">
-              <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-              </svg>
-              <h2 className="text-md font-semibold text-blue-400">{mod}</h2>
-            </div>
-            <div className="flex-1 h-px bg-gradient-to-r from-gray-700 to-transparent" />
-          </div>
+          <h2 className={ui.sectionHeading}>{mod}</h2>
 
           {/* Book Cards Grid */}
-          <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2">
+          <div className="grid gap-4 md:grid-cols-2">
             {grouped[mod].map((book: BookType) => (
-              <div
-                key={book.id}
-                className="group relative p-6 bg-gradient-to-br from-gray-900 to-gray-800 border border-gray-700 rounded-xl shadow-lg hover:shadow-2xl hover:border-blue-500 transition-all duration-300"
-              >
-                {/* Hover overlay */}
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/0 to-purple-500/0 group-hover:from-blue-500/5 group-hover:to-purple-500/5 rounded-xl transition-all duration-300" />
-
-                <div className="relative">
-                  {/* Header: title + emoji + module badge + delete */}
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="flex items-start gap-3">
-                      <span
-                        className="text-3xl leading-none select-none group-hover:scale-110 transition-transform duration-300"
-                        aria-hidden="true"
-                      >
-                        {book.icon ?? "📚"}
-                      </span>
-                      <h3 className="text-2xl font-bold text-white group-hover:text-blue-400 transition-colors leading-tight">
+              <div key={book.id} className={`flex flex-col ${ui.card}`}>
+                {/* Header: title + author + delete */}
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-start gap-3">
+                    <span className="select-none text-3xl leading-none" aria-hidden="true">
+                      {book.icon ?? "📖"}
+                    </span>
+                    <div className="min-w-0">
+                      <h3 className="text-2xl font-medium leading-snug text-[#222b30]">
                         {book.title}
                       </h3>
-                    </div>
-                    <div className="flex items-center gap-2 ml-3 shrink-0">
-                      <span className="px-3 py-1 bg-blue-600/20 text-blue-400 text-sm font-semibold rounded-full border border-blue-500/30">
-                        {book.moduleName}
-                      </span>
-                      {session && <DeleteBookButton bookId={book.id} />}
+                      <p className="italic text-[#67747a]">by {book.author}</p>
                     </div>
                   </div>
+                  {session && <DeleteBookButton bookId={book.id} />}
+                </div>
 
-                  {/* Author panel */}
-                  <div className="mb-4 p-3 bg-gray-800/50 rounded-lg border border-gray-700">
-                    <div className="flex items-center gap-2 mb-2">
-                      <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                      </svg>
-                      <span className="text-sm text-gray-400 font-medium">Author</span>
-                    </div>
-                    <p className="text-gray-200 font-mono text-md">{book.author}</p>
-                  </div>
-
-                  {/* Footer: open resource */}
-                  <div className="flex items-center justify-between p-3 bg-gradient-to-r from-gray-800/50 to-gray-700/50 rounded-lg border border-gray-600">
-                    <div className="flex items-center gap-2">
-                      <svg className="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-                      </svg>
-                      <span className="text-sm text-gray-300 font-semibold">Resource Link</span>
-                    </div>
-                    {book.url ? (
-                      <Link
-                        href={book.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white text-sm font-semibold rounded-lg transition-all duration-300 shadow-md hover:shadow-lg"
-                        aria-label={`Open ${book.title}`}
-                      >
-                        Open
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-4 w-4 transition-transform group-hover:translate-x-1"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                          aria-hidden="true"
-                        >
-                          <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
-                        </svg>
-                      </Link>
-                    ) : (
-                      <span className="text-sm text-gray-500 italic">No link available</span>
-                    )}
-                  </div>
+                {/* Footer: open resource */}
+                <div className="mt-4">
+                  {book.url ? (
+                    <Link
+                      href={book.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 border border-[#46535a] px-4 py-2 text-base tracking-wide text-[#46535a] transition-colors hover:bg-[#46535a] hover:text-[#eef1f1]"
+                      aria-label={`Open ${book.title}`}
+                    >
+                      Open resource
+                      <span aria-hidden>→</span>
+                    </Link>
+                  ) : (
+                    <span className="text-base italic text-[#90999b]">
+                      No link available
+                    </span>
+                  )}
                 </div>
               </div>
             ))}

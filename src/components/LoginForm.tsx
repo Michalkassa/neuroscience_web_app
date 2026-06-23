@@ -1,7 +1,8 @@
 'use client'
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import Image from "next/image";
 import { SignIn } from "@/app/api/auth/actions";
+import { bookFont, ui } from "@/app/theme";
 
 const initialState = {
   message: "",
@@ -9,52 +10,57 @@ const initialState = {
 
 const LoginForm: React.FC = () => {
   const [state, formAction] = useActionState(SignIn, initialState);
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <div className="w-full max-w-md bg-gray-900 border border-gray-700 rounded-lg shadow-lg overflow-hidden">
-      <div className="p-8">
-        <div className="flex items-center justify-center mb-6">
-          <Image src="/logo.png" alt="logo" width={48} height={48} className="rounded" />
-        </div>
-        <h1 className="text-xl font-bold text-white text-center mb-4">
-          Sign in to your account
-        </h1>
-        <form className="space-y-4" action={formAction}>
-          <div>
-            <label className="block mb-2 text-sm font-medium text-gray-300">
-              Your email
-            </label>
-            <input
-              required
-              type="email"
-              name="email"
-              id="email"
-              placeholder="name@company.com"
-              className="w-full bg-gray-700 border border-gray-600 text-white rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-          <div>
-            <label className="block mb-2 text-sm font-medium text-gray-300">
-              Password
-            </label>
-            <input
-              required
-              type="password"
-              name="password"
-              id="password"
-              placeholder="password"
-              className="w-full bg-gray-700 border border-gray-600 text-white rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-          <button
-            type="submit"
-            className="w-full flex items-center justify-center py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-md transition"
-          >
-            Sign in
-          </button>
-          <p className="text-center text-red-500 mt-2">{state?.message || ""}</p>
-        </form>
+    <div className={`w-full max-w-md ${ui.panel}`} style={{ fontFamily: bookFont }}>
+      <div className="mb-6 flex items-center justify-center">
+        <Image src="/logo.png" alt="logo" width={64} height={64} />
       </div>
+      <h1 className="mb-8 text-center text-3xl font-medium text-[#222b30]">
+        Sign in
+      </h1>
+
+      <form className="space-y-6" action={formAction}>
+        <div>
+          <label htmlFor="email" className={ui.label}>Email</label>
+          <input
+            required
+            type="email"
+            name="email"
+            id="email"
+            placeholder="name@company.com"
+            className={ui.input}
+          />
+        </div>
+        <div>
+          <div className="flex items-center justify-between">
+            <label htmlFor="password" className={ui.label}>Password</label>
+            <button
+              type="button"
+              onClick={() => setShowPassword((s) => !s)}
+              className="text-sm uppercase tracking-[0.2em] text-[#5d6a70] underline underline-offset-4 transition-colors hover:text-[#222b30]"
+              aria-pressed={showPassword}
+            >
+              {showPassword ? "Hide" : "Show"}
+            </button>
+          </div>
+          <input
+            required
+            type={showPassword ? "text" : "password"}
+            name="password"
+            id="password"
+            placeholder="password"
+            className={ui.input}
+          />
+        </div>
+        <button type="submit" className={ui.button}>
+          Sign in
+        </button>
+        {state?.message && (
+          <p className="text-center text-lg text-[#9b4a44]">{state.message}</p>
+        )}
+      </form>
     </div>
   );
 }

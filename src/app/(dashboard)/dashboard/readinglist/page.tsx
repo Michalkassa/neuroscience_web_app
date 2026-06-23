@@ -12,20 +12,22 @@ export default async function ReadingListPage() {
   const ReadingListBooks = await getBooks();
 
   return (
-    <div className="bg-gray-950 min-h-screen pt-10">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6">
-        <ReadingListForm />
+    <>
+      <h1 className="mb-8 text-center text-4xl font-medium tracking-tight">
+        Reading List
+      </h1>
 
-        <div className="mt-8">
-          {ReadingListBooks.length === 0 ? (
-            <div className="text-gray-400 text-center">
-              No Books found.
-            </div>
-          ) : (
-            <BookList books={ReadingListBooks}></BookList>
-          )}
-        </div>
+      <ReadingListForm />
+
+      <div className="mt-10">
+        {ReadingListBooks.length === 0 ? (
+          <p className="py-8 text-center text-lg italic text-[#67747a]">
+            No books recorded yet.
+          </p>
+        ) : (
+          <BookList books={ReadingListBooks} />
+        )}
       </div>
-    </div>
+    </>
   );
 }

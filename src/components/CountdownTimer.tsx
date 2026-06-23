@@ -51,15 +51,13 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({ dueDate }) => {
   }, [dueDate]);
 
   if (timeRemaining.isOverdue) {
-    return <span className="text-red-500 font-semibold">Overdue</span>;
+    return <span className="text-lg text-[#9b4a44]">Overdue</span>;
   }
 
   return (
-    <div className="text-gray-300">
-      <span className="font-mono">
-        {timeRemaining.days}d {timeRemaining.hours}h {timeRemaining.minutes}m {timeRemaining.seconds}s
-      </span>
-    </div>
+    <p className="text-lg text-[#46535a]">
+      {timeRemaining.days}d {timeRemaining.hours}h {timeRemaining.minutes}m {timeRemaining.seconds}s
+    </p>
   );
 };
 

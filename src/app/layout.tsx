@@ -1,20 +1,10 @@
 import { auth } from "./api/auth/auth";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import AdminHeader from "@/components/AdminHeader";
 import ReCaptchaProvider from "@/components/ReCaptchaProvider";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import { paperBackground } from "@/app/theme";
 
 export const metadata: Metadata = {
   title: "Your number 1 neuroscience helper",
@@ -31,7 +21,12 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <ReCaptchaProvider>
-      <body className="bg-gray-950">
+      <body className="text-[#222b30]" style={paperBackground}>
+        {/* red margin line running the full height of the sheet, up through the navbar */}
+        <div
+          aria-hidden
+          className="pointer-events-none fixed inset-y-0 left-10 z-0 w-px bg-[#b07d77]/45 sm:left-24"
+        />
         <Header />
         {session && <AdminHeader />}
         {children}

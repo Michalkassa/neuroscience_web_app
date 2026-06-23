@@ -8,34 +8,32 @@ import { auth } from "@/app/api/auth/auth";
 
 const AssignmentsPage: React.FC = async () => {
   const assignments = await getAssignments();
-
   const session = await auth()
 
   if (!session) return redirect("/login")
 
   return (
-    <div className="bg-gray-950 min-h-screen pt-10">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6">
-        <AssignmentForm />
+    <>
+      <h1 className="mb-8 text-center text-4xl font-medium tracking-tight">
+        Assignments
+      </h1>
 
-        <div className="mt-8">
-          {assignments.length === 0 ? (
-            <div className="text-gray-400 text-center">
-              No assignments found.
-            </div>
-          ) : (
-            <ul className="space-y-4">
-              {assignments.map((assignment: AssignmentType) => (
-                <AdminAssignmentCard
-                  key={assignment.id}
-                  assignment={assignment}
-                />
-              ))}
-            </ul>
-          )}
-        </div>
+      <AssignmentForm />
+
+      <div className="mt-10">
+        {assignments.length === 0 ? (
+          <p className="py-8 text-center text-lg italic text-[#67747a]">
+            No assignments recorded yet.
+          </p>
+        ) : (
+          <ul className="space-y-4">
+            {assignments.map((assignment: AssignmentType) => (
+              <AdminAssignmentCard key={assignment.id} assignment={assignment} />
+            ))}
+          </ul>
+        )}
       </div>
-    </div>
+    </>
   );
 };
 

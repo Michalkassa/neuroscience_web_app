@@ -19,8 +19,8 @@ return (
             type="button"
             onClick={() => setRating(star)}
             className={`
-              text-2xl transition
-              ${star <= rating ? "text-yellow-400" : "text-gray-300"}
+              text-3xl transition-colors
+              ${star <= rating ? "text-[#4d6580]" : "text-[#b3bcbd]"}
             `}
           >
             ★

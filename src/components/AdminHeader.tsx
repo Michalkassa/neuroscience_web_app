@@ -2,45 +2,41 @@
 import React from "react";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
+import { bookFont } from "@/app/theme";
+
+const links = [
+  { href: "/dashboard/feedback", label: "Feedback" },
+  { href: "/dashboard/assignments", label: "Assignments" },
+  { href: "/dashboard/readinglist", label: "Reading List" },
+];
 
 const AdminHeader: React.FC = () => {
   return (
-    <header className="bg-gradient-to-r from-gray-950 via-gray-900 to-gray-950 text-white shadow-lg border-b border-gray-800">
-      <div className="max-w-7xl mx-auto px-4 sm:px-8 py-2">
-        <div className="flex flex-row justify-between items-center">
-          <span className="text-gray-400 font-semibold tracking-widest text-sm uppercase">
-            Admin
-          </span>
-          <nav className="flex flex-row items-center gap-2">
+    <header
+      className="relative z-10 text-[#222b30]"
+      style={{ fontFamily: bookFont }}
+    >
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2 sm:px-8">
+        <span className="text-sm uppercase tracking-[0.3em] text-[#5d6a70]">
+          Admin
+        </span>
+        <nav className="flex items-center gap-6">
+          {links.map((link) => (
             <Link
-              href="/dashboard/feedback"
-              className="px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg font-medium transition-all"
+              key={link.href}
+              href={link.href}
+              className="text-lg text-[#46535a] underline decoration-[#46535a]/0 underline-offset-8 transition-colors duration-300 hover:text-[#222b30] hover:decoration-[#46535a]"
             >
-              Feedback
+              {link.label}
             </Link>
-            <Link
-              href="/dashboard/assignments"
-              className="px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg font-medium transition-all"
-            >
-              Assignments
-            </Link>
-            <Link
-              href="/dashboard/readinglist"
-              className="px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg font-medium transition-all"
-            >
-              Reading List
-            </Link>
-            <button
-              onClick={() => signOut({ callbackUrl: "/" })}
-              className="px-4 py-2 rounded-lg font-medium text-red-400
-                         hover:text-white hover:bg-red-600/20
-                         border border-red-500/30
-                         transition-all"
-            >
-              Logout
-            </button>
-          </nav>
-        </div>
+          ))}
+          <button
+            onClick={() => signOut({ callbackUrl: "/" })}
+            className="border border-[#b89b97] px-3 py-1 text-[#9b4a44] transition-colors hover:bg-[#9b4a44] hover:text-[#eef1f1]"
+          >
+            Logout
+          </button>
+        </nav>
       </div>
     </header>
   );

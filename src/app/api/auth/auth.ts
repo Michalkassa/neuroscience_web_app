@@ -25,7 +25,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           if (!user || !user.password) {
             return null
           }
-          const isPasswordValid = credentials.password === user.password // TODO use bcrypt here
+          const isPasswordValid = await bcrypt.compare(credentials.password as string, user.password)
           if (!isPasswordValid) {
             return null
           }

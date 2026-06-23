@@ -1,5 +1,6 @@
 'use client';
 import { DeleteBook } from '@/app/api/auth/actions';
+import { ui } from '@/app/theme';
 
 interface DeleteBookButtonProps {
   bookId: string;
@@ -13,7 +14,7 @@ function DeleteBookButton({ bookId }: DeleteBookButtonProps) {
   return (
     <button
       onClick={HandleClick}
-      className="p-2 bg-red-600/10 hover:bg-red-600/20 text-red-400 hover:text-red-300 rounded-lg border border-red-500/30 hover:border-red-500/50 transition-all duration-300"
+      className={ui.deleteButton}
       aria-label="Delete book"
     >
       <svg

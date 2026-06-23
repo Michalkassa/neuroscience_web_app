@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import prisma from "@/app/api/prisma";
 import { auth, signIn } from "@/app/api/auth/auth";
 import AuthError from "next-auth";
+import bcrypt from "bcrypt";
 import {Filter } from 'bad-words'
 
 import { AssignmentType, BookType, FeedbackFormSubmissionType, prevState } from "@/app/api/types";
@@ -176,9 +177,10 @@ export async function SignIn(
         });
         
         if (!user) return { message: "Credentials not correct" };
-        if (password != user.password)
-            return { message: "Credentials not correct" }; // TODO use Bcrypt here
-        
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid)
+            return { message: "Credentials not correct" };
+
         await signIn("credentials", formData);
     } catch (error) {
         if (error instanceof AuthError) {
