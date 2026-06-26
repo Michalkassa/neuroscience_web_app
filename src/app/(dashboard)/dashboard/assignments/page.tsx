@@ -1,7 +1,6 @@
 import React from "react";
 import { redirect } from "next/navigation"
 import AssignmentForm from "@/components/AssignmentForm";
-import AssignmentImport from "@/components/AssignmentImport";
 import { getAssignments } from "@/app/api/auth/actions";
 import { AssignmentType } from "@/app/api/types";
 import AdminAssignmentCard from "@/components/AdminAssignmentCard";
@@ -21,10 +20,6 @@ const AssignmentsPage: React.FC = async () => {
       </h1>
 
       <AssignmentForm />
-
-      <div className="mt-8">
-        <AssignmentImport />
-      </div>
 
       <div className="mt-10">
         {assignments.length === 0 ? (
