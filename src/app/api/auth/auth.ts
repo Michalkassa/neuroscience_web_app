@@ -3,6 +3,7 @@ import Credentials from "next-auth/providers/credentials"
 import prisma from "@/app/api/prisma"
 import bcrypt from 'bcrypt'
 import { PrismaAdapter } from "@auth/prisma-adapter"
+import { isAllowedEmail } from "@/app/api/auth/allowlist"
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -14,6 +15,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       },
       authorize: async (credentials): Promise<User | null> => {
         if (!credentials?.email || !credentials?.password) {
+          return null;
+        }
+        // Hard gate: only authorized emails may ever authenticate.
+        if (!isAllowedEmail(credentials.email as string)) {
           return null;
         }
         try {

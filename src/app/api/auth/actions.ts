@@ -6,6 +6,7 @@ import { auth, signIn } from "@/app/api/auth/auth";
 import AuthError from "next-auth";
 import bcrypt from "bcrypt";
 import {Filter } from 'bad-words'
+import { isAllowedEmail } from "@/app/api/auth/allowlist";
 
 import { AssignmentType, BookType, FeedbackFormSubmissionType, prevState } from "@/app/api/types";
 
@@ -168,6 +169,7 @@ export async function SignIn(
     if (!email) return { message: "Please Enter an Email" };
     if (!password) return { message: "Please Enter a Password" };
     if (!email.includes("@")) return { message: "Not a valid email" };
+    if (!isAllowedEmail(email)) return { message: "This email is not authorized to log in" };
 
     try {
         const user = await prisma.user.findUnique({
