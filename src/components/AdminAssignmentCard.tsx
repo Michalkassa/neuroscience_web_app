@@ -1,11 +1,15 @@
 'use client';
 
+import { useState } from 'react';
 import { DeleteAssignment } from '@/app/api/auth/actions';
-import CountdownTimer from './CountdownTimer';
+import AssignmentMeta from './AssignmentMeta';
+import EditAssignmentForm from './EditAssignmentForm';
 import { AssignmentType } from '@/app/api/types';
 import { ui } from '@/app/theme';
 
 const AdminAssignmentCard = ({ assignment }: { assignment: AssignmentType }) => {
+  const [isEditing, setIsEditing] = useState(false);
+
   async function handleDelete() {
     await DeleteAssignment(assignment);
   }
@@ -18,6 +22,20 @@ const AdminAssignmentCard = ({ assignment }: { assignment: AssignmentType }) => 
         </h3>
         <div className="flex items-center gap-2">
           <span className={ui.chip}>{assignment.moduleName}</span>
+          <button
+            onClick={() => setIsEditing((v) => !v)}
+            className={ui.editButton}
+            aria-label={isEditing ? 'Stop editing assignment' : 'Edit assignment'}
+          >
+            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+              />
+            </svg>
+          </button>
           <button
             onClick={handleDelete}
             className={ui.deleteButton}
@@ -35,19 +53,11 @@ const AdminAssignmentCard = ({ assignment }: { assignment: AssignmentType }) => 
         </div>
       </div>
 
-      <div className="mt-3 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
-        <p className="italic text-[#67747a]">
-          Due{' '}
-          {assignment.dueDate.toLocaleString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-          })}
-        </p>
-        <CountdownTimer dueDate={assignment.dueDate} />
-      </div>
+      {isEditing ? (
+        <EditAssignmentForm assignment={assignment} onDone={() => setIsEditing(false)} />
+      ) : (
+        <AssignmentMeta assignment={assignment} />
+      )}
     </li>
   );
 };

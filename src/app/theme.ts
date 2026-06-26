@@ -4,6 +4,9 @@ import type { CSSProperties } from "react";
 export const bookFont =
   '"Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif';
 
+/** Plain sans-serif used to opt a page out of the site-wide book serif. */
+export const sansFont = "Arial, Helvetica, sans-serif";
+
 /**
  * Shared notebook UI class strings. Edit these in one place to retune every
  * form and card across the site.
@@ -34,6 +37,20 @@ export const ui = {
   /** destructive (delete) button */
   deleteButton:
     "shrink-0 border border-[#b89b97] p-2 text-[#9b4a44] transition-colors hover:bg-[#9b4a44] hover:text-[#eef1f1]",
+  /** edit (pencil) button — neutral sibling of deleteButton */
+  editButton:
+    "shrink-0 border border-[#9aa6a9] p-2 text-[#46535a] transition-colors hover:bg-[#46535a] hover:text-[#eef1f1]",
+  /** assessment-type badge — formative (low-stakes, greenish) */
+  badgeFormative:
+    "inline-flex items-center rounded-sm border border-[#7e9277] bg-[#e3ebdf] px-2 py-0.5 text-xs font-medium uppercase tracking-[0.16em] text-[#48603f]",
+  /** assessment-type badge — summative (graded, warm clay) */
+  badgeSummative:
+    "inline-flex items-center rounded-sm border border-[#b08c6b] bg-[#efe3d6] px-2 py-0.5 text-xs font-medium uppercase tracking-[0.16em] text-[#8a5a33]",
+  /** small caps label used inside a meta grid */
+  metaLabel:
+    "text-[0.65rem] uppercase tracking-[0.18em] text-[#7a868b]",
+  /** value text used inside a meta grid */
+  metaValue: "text-[#37434a]",
 } as const;
 
 /** Toned blue-gray ruled-paper background used on full-page notebook screens. */

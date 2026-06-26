@@ -36,10 +36,15 @@ model FeedbackFormSubmissions {
 }
 
 model Assignments {
-  id      String   @id @default(cuid())
-  title   String
-  moduleName  String
-  dueDate DateTime
+  id               String    @id @default(cuid())
+  title            String
+  moduleName       String
+  dueDate          DateTime
+  isSummative      Boolean   @default(false)
+  weight           Int?
+  topics           String?
+  assessmentStyle  String?
+  expectedFeedback String?
 }
 
 model Books {

@@ -2,6 +2,7 @@
 import { SubmitAssignmentForm } from "@/app/api/auth/actions";
 import { useActionState } from "react";
 import { ui } from "@/app/theme";
+import AssignmentFields from "@/components/AssignmentFields";
 
 const initialState = {
   message: "",
@@ -49,6 +50,8 @@ const AssignmentForm: React.FC = () => {
             className={ui.input}
           />
         </div>
+
+        <AssignmentFields />
 
         <button type="submit" className={ui.button}>Submit</button>
 

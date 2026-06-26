@@ -5,6 +5,7 @@ import { getAssignments } from "@/app/api/auth/actions";
 import { AssignmentType } from "@/app/api/types";
 import AdminAssignmentCard from "@/components/AdminAssignmentCard";
 import { auth } from "@/app/api/auth/auth";
+import { sansFont } from "@/app/theme";
 
 const AssignmentsPage: React.FC = async () => {
   const assignments = await getAssignments();
@@ -13,7 +14,7 @@ const AssignmentsPage: React.FC = async () => {
   if (!session) return redirect("/login")
 
   return (
-    <>
+    <div style={{ fontFamily: sansFont }}>
       <h1 className="mb-8 text-center text-4xl font-medium tracking-tight">
         Assignments
       </h1>
@@ -22,7 +23,7 @@ const AssignmentsPage: React.FC = async () => {
 
       <div className="mt-10">
         {assignments.length === 0 ? (
-          <p className="py-8 text-center text-lg italic text-[#67747a]">
+          <p className="py-8 text-center text-lg text-[#67747a]">
             No assignments recorded yet.
           </p>
         ) : (
@@ -33,7 +34,7 @@ const AssignmentsPage: React.FC = async () => {
           </ul>
         )}
       </div>
-    </>
+    </div>
   );
 };
 

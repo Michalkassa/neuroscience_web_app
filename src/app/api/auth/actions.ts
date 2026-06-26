@@ -23,27 +23,70 @@ function filterInputText(inputText : string): string {
     return badWordsFilter.clean(inputText);
 } 
 
+function parseAssignmentFields(formData: FormData) {
+    const isSummative = formData.get("isSummative") === "true";
+    const weightString = formData.get("weight") as string | null;
+    const topics = (formData.get("topics") as string | null)?.trim() || null;
+    const assessmentStyle =
+        (formData.get("assessmentStyle") as string | null)?.trim() || null;
+    const expectedFeedback =
+        (formData.get("expectedFeedback") as string | null)?.trim() || null;
+
+    // Weight only applies to summative assessments.
+    const weight =
+        isSummative && weightString ? Number(weightString) : null;
+
+    return { isSummative, weight, topics, assessmentStyle, expectedFeedback };
+}
+
 export async function SubmitAssignmentForm(prevState: prevState, formData: FormData) {
     const title = formData.get("title") as string;
     const moduleName = formData.get("module") as string;
     const dueDateString = formData.get("dueDate") as string;
-    
+
     if (!title || !moduleName || !dueDateString) {
         return {message: "Missing required data", success: false}
     }
-    
+
     const dueDate = new Date(dueDateString);
     const assignmentSubmission = await prisma.assignments.create({
-    
+
         data: {
             title: title,
             moduleName: moduleName,
             dueDate: dueDate,
+            ...parseAssignmentFields(formData),
         },
     });
-    
+
     revalidatePath("/assignments");
+    revalidatePath("/dashboard/assignments");
     return {message: "Assignment Submitted Successfully", success: true}
+}
+
+export async function UpdateAssignment(prevState: prevState, formData: FormData) {
+    const id = formData.get("id") as string;
+    const title = formData.get("title") as string;
+    const moduleName = formData.get("module") as string;
+    const dueDateString = formData.get("dueDate") as string;
+
+    if (!id || !title || !moduleName || !dueDateString) {
+        return {message: "Missing required data", success: false}
+    }
+
+    await prisma.assignments.update({
+        where: { id },
+        data: {
+            title: title,
+            moduleName: moduleName,
+            dueDate: new Date(dueDateString),
+            ...parseAssignmentFields(formData),
+        },
+    });
+
+    revalidatePath("/assignments");
+    revalidatePath("/dashboard/assignments");
+    return {message: "Assignment Updated Successfully", success: true}
 }
 export async function SubmitReadingListForm(prevState:prevState, formData: FormData){
     const title = formData.get("title") as string;

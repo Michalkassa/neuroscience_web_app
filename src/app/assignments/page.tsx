@@ -2,7 +2,7 @@ import { AssignmentType } from "@/app/api/types";
 import { getAssignments } from "@/app/api/auth/actions";
 import AssignmentCard from "@/components/AssignmentCard";
 import NotebookPage from "@/components/NotebookPage";
-import { ui } from "@/app/theme";
+import { ui, sansFont } from "@/app/theme";
 
 function groupByModule(items: AssignmentType[]) {
   const collection: { [key: string]: AssignmentType[] } = {};
@@ -22,9 +22,10 @@ export default async function AssignmentsPage() {
   const grouped: { [key: string]: AssignmentType[] } = groupByModule(assignments);
 
   return (
-    <NotebookPage title="Assignments" ornament={false}>
+    <div style={{ fontFamily: sansFont }}>
+      <NotebookPage title="Assignments" ornament={false}>
       {Object.keys(grouped).length === 0 ? (
-        <p className="py-12 text-center text-lg italic text-[#67747a]">
+        <p className="py-12 text-center text-lg text-[#67747a]">
           No assignments recorded yet.
         </p>
       ) : (
@@ -41,6 +42,7 @@ export default async function AssignmentsPage() {
           ))}
         </div>
       )}
-    </NotebookPage>
+      </NotebookPage>
+    </div>
   );
 }

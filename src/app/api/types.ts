@@ -1,9 +1,14 @@
 
 export interface AssignmentType {
   id : string,
-  title: string,    
+  title: string,
   moduleName: string,
-  dueDate: Date
+  dueDate: Date,
+  isSummative: boolean,
+  weight: number | null,
+  topics: string | null,
+  assessmentStyle: string | null,
+  expectedFeedback: string | null,
 }
 export interface prevState{
   message: string;
