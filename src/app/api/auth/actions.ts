@@ -64,6 +64,121 @@ export async function SubmitAssignmentForm(prevState: prevState, formData: FormD
     return {message: "Assignment Submitted Successfully", success: true}
 }
 
+/**
+ * Minimal RFC-4180-style CSV parser: handles quoted fields, escaped quotes
+ * ("") and commas/newlines inside quotes. Returns rows of string cells.
+ */
+function parseCSV(text: string): string[][] {
+    if (text.charCodeAt(0) === 0xfeff) text = text.slice(1); // strip BOM
+    const rows: string[][] = [];
+    let row: string[] = [];
+    let field = "";
+    let inQuotes = false;
+
+    for (let i = 0; i < text.length; i++) {
+        const char = text[i];
+        if (inQuotes) {
+            if (char === '"') {
+                if (text[i + 1] === '"') { field += '"'; i++; }
+                else inQuotes = false;
+            } else field += char;
+        } else if (char === '"') {
+            inQuotes = true;
+        } else if (char === ",") {
+            row.push(field); field = "";
+        } else if (char === "\n") {
+            row.push(field); rows.push(row); row = []; field = "";
+        } else if (char !== "\r") {
+            field += char;
+        }
+    }
+    if (field.length > 0 || row.length > 0) { row.push(field); rows.push(row); }
+    return rows;
+}
+
+/** Map possible CSV header spellings to assignment field keys. */
+const CSV_HEADER_ALIASES: Record<string, string> = {
+    title: "title",
+    module: "module", modulename: "module",
+    duedate: "dueDate", due: "dueDate", deadline: "dueDate",
+    type: "type", assessmenttype: "type", formativesummative: "type",
+    weight: "weight", weightpercent: "weight", "weight%": "weight",
+    topics: "topics", topicsassessed: "topics",
+    style: "assessmentStyle", assessmentstyle: "assessmentStyle",
+    feedback: "expectedFeedback", expectedfeedback: "expectedFeedback",
+    expectedfeedbackdate: "expectedFeedback",
+};
+
+export async function ImportAssignmentsCSV(prevState: prevState, formData: FormData) {
+    const file = formData.get("file") as File | null;
+    if (!file || file.size === 0) {
+        return { message: "Please choose a CSV file", success: false };
+    }
+
+    const rows = parseCSV(await file.text()).filter(
+        (r) => r.some((c) => c.trim() !== "")
+    );
+    if (rows.length < 2) {
+        return { message: "CSV needs a header row and at least one assignment", success: false };
+    }
+
+    // Build a column index from the header row using the alias table.
+    const header = rows[0].map((h) => h.trim().toLowerCase().replace(/[\s_]/g, ""));
+    const col: Record<string, number> = {};
+    header.forEach((h, i) => {
+        const key = CSV_HEADER_ALIASES[h];
+        if (key && !(key in col)) col[key] = i;
+    });
+
+    if (!("title" in col) || !("module" in col) || !("dueDate" in col)) {
+        return { message: "CSV must include title, module and dueDate columns", success: false };
+    }
+
+    const cell = (row: string[], key: string) =>
+        col[key] != null ? (row[col[key]] ?? "").trim() : "";
+
+    const data = [];
+    let skipped = 0;
+    for (const row of rows.slice(1)) {
+        const title = cell(row, "title");
+        const moduleName = cell(row, "module");
+        const dueRaw = cell(row, "dueDate");
+        const dueDate = new Date(dueRaw.replace(" ", "T"));
+        if (!title || !moduleName || !dueRaw || isNaN(dueDate.getTime())) {
+            skipped++;
+            continue;
+        }
+
+        const typeRaw = cell(row, "type").toLowerCase();
+        const isSummative = ["summative", "true", "s", "yes"].includes(typeRaw);
+        const weightRaw = cell(row, "weight");
+        const weight =
+            isSummative && weightRaw && !isNaN(Number(weightRaw)) ? Number(weightRaw) : null;
+
+        data.push({
+            title,
+            moduleName,
+            dueDate,
+            isSummative,
+            weight,
+            topics: cell(row, "topics") || null,
+            assessmentStyle: cell(row, "assessmentStyle") || null,
+            expectedFeedback: cell(row, "expectedFeedback") || null,
+        });
+    }
+
+    if (data.length === 0) {
+        return { message: `No valid rows found (${skipped} skipped)`, success: false };
+    }
+
+    await prisma.assignments.createMany({ data });
+    revalidatePath("/assignments");
+    revalidatePath("/dashboard/assignments");
+
+    const skippedNote = skipped > 0 ? `, ${skipped} skipped` : "";
+    return { message: `Imported ${data.length} assignment(s)${skippedNote}`, success: true };
+}
+
 export async function UpdateAssignment(prevState: prevState, formData: FormData) {
     const id = formData.get("id") as string;
     const title = formData.get("title") as string;
