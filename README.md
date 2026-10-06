@@ -9,10 +9,11 @@ A web app for neuroscience students to track assignments, browse a module readin
 ## Features
 
 - 📝 **Anonymous feedback**: rate lectures from 1 to 5 stars and leave comments, with a profanity filter
-- 📅 **Assignments**: grouped by module, with due dates and overdue status
+- 📅 **Assignments**: grouped by module, with weight, topics, assessment style, feedback date, a due-date countdown and overdue status
 - 📚 **Reading list**: books and resources grouped by module, with links
-- 🔐 **Admin dashboard**: sign in to add or delete assignments and books, and to search or delete feedback
-- 🛡️ **Security**: bcrypt-hashed passwords, JWT sessions and reCAPTCHA v3
+- 🔐 **Admin dashboard**: create, edit and delete assignments; add and delete books; review and delete feedback
+- 🛡️ **Security**: login only for emails on an allowlist, no public sign-up, bcrypt-hashed passwords, JWT sessions
+- 🎨 **Notebook theme**: lined-paper design with hand-drawn lab equipment illustrations
 
 ## Screenshots
 
@@ -31,7 +32,7 @@ A web app for neuroscience students to track assignments, browse a module readin
 - **Language:** TypeScript
 - **Database:** PostgreSQL + Prisma ORM 7 (`@prisma/adapter-pg`)
 - **Auth:** NextAuth.js v5 (Credentials) + bcrypt
-- **Other:** Google reCAPTCHA v3, `bad-words`, `use-debounce`
+- **Other:** Google reCAPTCHA v3, `bad-words`
 - **Hosting:** Vercel
 
 ## Routes
@@ -43,9 +44,9 @@ A web app for neuroscience students to track assignments, browse a module readin
 | `/assignments` | Public | Assignments by module |
 | `/reading-list` | Public | Reading list by module |
 | `/login` | Public | Admin sign-in |
-| `/dashboard/feedback` | Admin | View, search and delete feedback |
-| `/dashboard/assignments` | Admin | Add or delete assignments |
-| `/dashboard/readinglist` | Admin | Add or delete books |
+| `/dashboard/feedback` | Admin | View and delete feedback |
+| `/dashboard/assignments` | Admin | Create, edit and delete assignments |
+| `/dashboard/readinglist` | Admin | Add and delete books |
 
 ## Database Schema
 
@@ -57,7 +58,6 @@ A web app for neuroscience students to track assignments, browse a module readin
 | name | String? | |
 | email | String | unique |
 | password | String | bcrypt hash |
-| admin | Boolean | default `false` |
 | emailVerified | DateTime? | |
 | image | String? | |
 | createdAt / updatedAt | DateTime | |
@@ -86,8 +86,13 @@ A web app for neuroscience students to track assignments, browse a module readin
 |---|---|---|
 | id | String | PK, cuid |
 | title | String | |
-| moduleName | String | |
+| moduleName | String | e.g. `BIOC0001` |
 | dueDate | DateTime | |
+| isSummative | Boolean | default `false` |
+| weight | Int? | % of module grade |
+| topics | String? | |
+| assessmentStyle | String? | |
+| expectedFeedback | String? | |
 
 **Books**
 
@@ -105,6 +110,7 @@ A web app for neuroscience students to track assignments, browse a module readin
 ```bash
 npm install
 npx prisma migrate dev
+npm run seed   # creates the admin account
 npm run dev
 ```
 
@@ -113,7 +119,10 @@ Create a `.env` file:
 ```env
 DATABASE_URL=postgresql://user:password@localhost:5432/db
 AUTH_SECRET=...
-NEXTAUTH_URL=http://localhost:3000
+ALLOWED_EMAILS=admin@example.com
+ADMIN_EMAIL=admin@example.com
+ADMIN_PASSWORD=...
+ADMIN_NAME=Admin
 RECAPTCHA_SITE_KEY=...
 RECAPTCHA_SECRET_KEY=...
 ```
